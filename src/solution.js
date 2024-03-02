@@ -74,6 +74,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('mousedown', onMouseDown);
 document.addEventListener('mouseup', onMouseUp);
 document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('wheel', onMouseWheel);
 
 
 
@@ -128,6 +129,16 @@ function onMouseUp(event) {
 
     isPanning = false;
     document.body.classList.remove('pan'); // Remove the pan cursor
+}
+
+function onMouseWheel(event) {
+    const delta = Math.sign(event.deltaY) * 100;
+
+    var zPos = camera.position.z + delta
+
+    if (zPos < 600 && zPos > -600) {
+        camera.position.z += delta;
+    }
 }
 
 
