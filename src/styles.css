@@ -14,3 +14,13 @@ body{
     left: 0;
     outline: none;
 }
+
+
+canvas { 
+    display: block; 
+    cursor: grab; /* Set the default cursor to grab */
+}
+
+.pan {
+    cursor: move; /* Override cursor while actively dragging */
+}

@@ -1,7 +1,4 @@
 import * as THREE from 'three'
-import {
-    OrbitControls
-} from 'three/addons/controls/OrbitControls.js'
 import GUI from 'lil-gui'
 
 // GUI - for debugging
@@ -37,6 +34,9 @@ geometry.scale(-1, 1, 1)
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
+
+
+
 var sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -46,9 +46,6 @@ var sizes = {
 const camera = new THREE.PerspectiveCamera(70, sizes.width / sizes.height)
 scene.add(camera)
 camera.position.z = 5
-
-const controls = new OrbitControls(camera, canvas)
-controls.enableZoom = true
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -72,6 +69,68 @@ window.addEventListener('resize', () => {
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
+
+
+document.addEventListener('mousedown', onMouseDown);
+document.addEventListener('mouseup', onMouseUp);
+document.addEventListener('mousemove', onMouseMove);
+
+
+
+// Add event listeners for mouse movement
+let isDragging = false;
+let previousMousePosition = {
+    x: 0,
+    y: 0
+};
+
+function onMouseMove(event) {
+
+    if (isPanning) {
+        canvas.classList.add('pan');
+    } else {
+        canvas.classList.remove('pan');
+    }
+
+    if (!isDragging) return;
+
+
+
+    const deltaMove = {
+        x: event.offsetX - previousMousePosition.x,
+        y: event.offsetY - previousMousePosition.y
+    };
+
+    mesh.rotation.x += deltaMove.y * 0.01;
+    mesh.rotation.y += deltaMove.x * 0.01;
+
+    previousMousePosition = {
+        x: event.offsetX,
+        y: event.offsetY
+    };
+}
+
+// Variables to track panning state
+let isPanning = false;
+
+function onMouseDown(event) {
+    isDragging = true;
+    previousMousePosition = {
+        x: event.offsetX,
+        y: event.offsetY
+    };
+    isPanning = true;
+    document.body.classList.add('pan'); // Apply the pan cursor
+}
+
+function onMouseUp(event) {
+    isDragging = false;
+
+    isPanning = false;
+    document.body.classList.remove('pan'); // Remove the pan cursor
+}
+
+
 
 const clock = new THREE.Clock()
 
