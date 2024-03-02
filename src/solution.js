@@ -1,25 +1,21 @@
 import * as THREE from 'three'
-import GUI from 'lil-gui'
-
-// GUI - for debugging
-const gui = new GUI()
 
 // Canvas
-const canvas = document.querySelector('canvas.webgl')
+const canvas = document.querySelector('canvas.webgl');
 
 // Scene
-const scene = new THREE.Scene()
+const scene = new THREE.Scene();
 
 var loadingManager = new THREE.LoadingManager();
 loadingManager.onLoad = () => {
-    console.log('Loaded')
+    console.log('Loaded');
 }
 
 loadingManager.onError = (err) => {
     console.log(err);
 }
 
-var textureLoader = new THREE.TextureLoader(loadingManager)
+var textureLoader = new THREE.TextureLoader(loadingManager);
 
 const texture = textureLoader.load('R0010121.jpg');
 texture.colorSpace = THREE.SRGBColorSpace;
@@ -27,25 +23,21 @@ const material = new THREE.MeshBasicMaterial({
     map: texture
 });
 
-const geometry = new THREE.SphereGeometry(1000, 100, 100)
+const geometry = new THREE.SphereGeometry(1000, 100, 100);
 // invert the geometry on the x-axis so that all of the faces point inward
-geometry.scale(-1, 1, 1)
-
-const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
-
-
-
+geometry.scale(-1, 1, 1);
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 
 var sizes = {
     width: window.innerWidth,
     height: window.innerHeight
-}
+};
 
 //Camera
-const camera = new THREE.PerspectiveCamera(70, sizes.width / sizes.height)
-scene.add(camera)
-camera.position.z = 5
+const camera = new THREE.PerspectiveCamera(70, sizes.width / sizes.height);
+scene.add(camera);
+//camera.position.z = 5;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -95,8 +87,6 @@ function onMouseMove(event) {
 
     if (!isDragging) return;
 
-
-
     const deltaMove = {
         x: event.offsetX - previousMousePosition.x,
         y: event.offsetY - previousMousePosition.y
@@ -133,27 +123,23 @@ function onMouseUp(event) {
 
 function onMouseWheel(event) {
     const delta = Math.sign(event.deltaY) * 100;
-
-    var zPos = camera.position.z + delta
-
+    var zPos = camera.position.z + delta;
     if (zPos < 800 && zPos > -800) {
         camera.position.z += delta;
     }
 }
 
-
-
-const clock = new THREE.Clock()
+const clock = new THREE.Clock();
 
 function animate() {
     renderer.render(scene, camera)
-    const elapsedTime = clock.getElapsedTime()
+    const elapsedTime = clock.getElapsedTime();
 
     // Render
-    renderer.render(scene, camera)
+    renderer.render(scene, camera);
 
     // Call animate again on the next frame
-    window.requestAnimationFrame(animate)
+    window.requestAnimationFrame(animate);
 }
 
-animate()
+animate();
