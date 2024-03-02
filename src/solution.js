@@ -136,7 +136,7 @@ function onMouseWheel(event) {
 
     var zPos = camera.position.z + delta
 
-    if (zPos < 600 && zPos > -600) {
+    if (zPos < 800 && zPos > -800) {
         camera.position.z += delta;
     }
 }
